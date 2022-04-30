@@ -31,7 +31,6 @@ func GetStudentsData() []models.Student {
 	var data []models.Student
 	fmt.Println("fetching data")
 	db.Find(&data)
-	fmt.Println(data)
 	return data
 }
 
