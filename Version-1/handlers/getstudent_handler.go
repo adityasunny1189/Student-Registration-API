@@ -20,7 +20,7 @@ func GetStudent(c *gin.Context) {
 	} else {
 		student := db.GetStudentData(usn)
 		if student.ID == 0 {
-			c.IndentedJSON(http.StatusOK, gin.H{"message": "student not present"})
+			c.IndentedJSON(http.StatusNotFound, gin.H{"message": "student not present"})
 			return
 		}
 		// Add data to redis
