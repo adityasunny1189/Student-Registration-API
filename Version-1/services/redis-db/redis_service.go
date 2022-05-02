@@ -2,6 +2,7 @@ package redisdb
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/adityasunny1189/Student-Registration-API/models"
@@ -19,7 +20,7 @@ func InitializeRedisDB() {
 	})
 }
 
-func SetData(key string, val models.Student) {
+func SetData(key string, val []byte) {
 	err := rdb.Set(ctx, key, val, 0).Err()
 	if err != nil {
 		fmt.Println(err)
@@ -29,7 +30,7 @@ func SetData(key string, val models.Student) {
 func GetData(key string) (models.Student, error) {
 	val, err := rdb.Get(ctx, key).Result()
 	if err != nil {
-		fmt.Println("error connecting to redis db", err)
+		fmt.Println("error getting data from redis db", err)
 		return models.Student{}, err
 	}
 	if err == redis.Nil {
@@ -39,7 +40,8 @@ func GetData(key string) (models.Student, error) {
 		fmt.Println(err)
 		return models.Student{}, err
 	} else {
-		fmt.Println("key", val)
-		return models.Student{}, nil
+		var student models.Student
+		json.Unmarshal([]byte(val), &student)
+		return student, nil
 	}
 }
