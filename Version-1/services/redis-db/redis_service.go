@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/adityasunny1189/Student-Registration-API/models"
 	"github.com/go-redis/redis/v8"
@@ -21,7 +22,7 @@ func InitializeRedisDB() {
 }
 
 func SetData(key string, val []byte) {
-	err := rdb.Set(ctx, key, val, 0).Err()
+	err := rdb.Set(ctx, key, val, time.Second*10).Err()
 	if err != nil {
 		fmt.Println(err)
 	}
